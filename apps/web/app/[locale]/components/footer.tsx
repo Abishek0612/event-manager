@@ -5,40 +5,21 @@ import Link from "next/link";
 export const Footer = () => {
   const navigationItems = [
     {
-      title: "Home",
-      href: "/",
+      title: "Events",
+      href: "/events",
       description: "",
     },
     {
-      title: "Pages",
-      description: "Managing a small business today is already tough.",
+      title: "About",
+      description: "Simple event management solution",
       items: [
         {
-          title: "Blog",
-          href: "/blog",
-        },
-        {
-          title: "Pricing",
-          href: "/pricing",
-        },
-      ],
-    },
-    {
-      title: "Legal",
-      description: "We stay on top of the latest legal requirements.",
-      items: [
-        {
-          title: "Privacy Policy",
-          href: "/legal/privacy",
-        },
-        {
-          title: "Terms of Service",
-          href: "/legal/terms",
+          title: "Contact",
+          href: "/contact",
         },
       ],
     },
   ];
-
   if (env.NEXT_PUBLIC_DOCS_URL) {
     navigationItems.at(1)?.items?.push({
       title: "Docs",

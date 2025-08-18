@@ -1,179 +1,83 @@
-import { basehub as basehubClient, fragmentOn } from 'basehub';
-import { keys } from './keys';
-
-const basehub = basehubClient({
-  token: keys().BASEHUB_TOKEN,
-});
-
-/* -------------------------------------------------------------------------------------------------
- * Common Fragments
- * -----------------------------------------------------------------------------------------------*/
-
-const imageFragment = fragmentOn('BlockImage', {
-  url: true,
-  width: true,
-  height: true,
-  alt: true,
-  blurDataURL: true,
-});
-
-/* -------------------------------------------------------------------------------------------------
- * Blog Fragments & Queries
- * -----------------------------------------------------------------------------------------------*/
-
-const postMetaFragment = fragmentOn('PostsItem', {
-  _slug: true,
-  _title: true,
-  authors: {
-    _title: true,
-    avatar: imageFragment,
-    xUrl: true,
+const mockPost = {
+  _title: "Sample Blog Post",
+  _slug: "sample-post",
+  description: "This is a sample blog post description",
+  date: new Date().toISOString(),
+  image: {
+    url: "/placeholder.jpg",
+    alt: "Sample image",
+    width: 800,
+    height: 400,
   },
-  categories: {
-    _title: true,
-  },
-  date: true,
-  description: true,
-  image: imageFragment,
-});
-
-const postFragment = fragmentOn('PostsItem', {
-  ...postMetaFragment,
   body: {
-    plainText: true,
     json: {
-      content: true,
-      toc: true,
+      content: [],
+      toc: [],
     },
-    readingTime: true,
+    readingTime: 5,
   },
-});
+  authors: [
+    {
+      _title: "Sample Author",
+    },
+  ],
+};
 
-export type PostMeta = fragmentOn.infer<typeof postMetaFragment>;
-export type Post = fragmentOn.infer<typeof postFragment>;
+const mockLegalPost = {
+  _title: "Privacy Policy",
+  _slug: "privacy",
+  description: "Our privacy policy",
+  body: {
+    json: {
+      content: [],
+      toc: [],
+    },
+    readingTime: 3,
+  },
+};
 
 export const blog = {
-  postsQuery: fragmentOn('Query', {
+  getPosts: async () => [mockPost],
+  getPost: async (slug: string) => (slug ? mockPost : null),
+  postsQuery: {
     blog: {
       posts: {
-        items: postMetaFragment,
+        items: [mockPost],
+        item: mockPost,
       },
     },
-  }),
-
-  latestPostQuery: fragmentOn('Query', {
-    blog: {
-      posts: {
-        __args: {
-          orderBy: '_sys_createdAt__DESC',
-        },
-        item: postFragment,
-      },
-    },
-  }),
-
+  },
   postQuery: (slug: string) => ({
     blog: {
       posts: {
-        __args: {
-          filter: {
-            _sys_slug: { eq: slug },
-          },
-        },
-        item: postFragment,
+        item: slug ? mockPost : null,
       },
     },
   }),
-
-  getPosts: async (): Promise<PostMeta[]> => {
-    const data = await basehub.query(blog.postsQuery);
-
-    return data.blog.posts.items;
-  },
-
-  getLatestPost: async () => {
-    const data = await basehub.query(blog.latestPostQuery);
-
-    return data.blog.posts.item;
-  },
-
-  getPost: async (slug: string) => {
-    const query = blog.postQuery(slug);
-    const data = await basehub.query(query);
-
-    return data.blog.posts.item;
+  latestPostQuery: {
+    blog: {
+      posts: {
+        item: mockPost,
+      },
+    },
   },
 };
-
-/* -------------------------------------------------------------------------------------------------
- * Legal Fragments & Queries
- * -----------------------------------------------------------------------------------------------*/
-
-const legalPostMetaFragment = fragmentOn('LegalPagesItem', {
-  _slug: true,
-  _title: true,
-  description: true,
-});
-
-const legalPostFragment = fragmentOn('LegalPagesItem', {
-  ...legalPostMetaFragment,
-  body: {
-    plainText: true,
-    json: {
-      content: true,
-      toc: true,
-    },
-    readingTime: true,
-  },
-});
-
-export type LegalPostMeta = fragmentOn.infer<typeof legalPostMetaFragment>;
-export type LegalPost = fragmentOn.infer<typeof legalPostFragment>;
 
 export const legal = {
-  postsQuery: fragmentOn('Query', {
+  getPosts: async () => [mockLegalPost],
+  getPost: async (slug: string) => (slug ? mockLegalPost : null),
+  postsQuery: {
     legalPages: {
-      items: legalPostFragment,
+      items: [mockLegalPost],
+      item: mockLegalPost,
+    },
+  },
+  postQuery: (slug: string) => ({
+    legalPages: {
+      item: slug ? mockLegalPost : null,
     },
   }),
-
-  latestPostQuery: fragmentOn('Query', {
-    legalPages: {
-      __args: {
-        orderBy: '_sys_createdAt__DESC',
-      },
-      item: legalPostFragment,
-    },
-  }),
-
-  postQuery: (slug: string) =>
-    fragmentOn('Query', {
-      legalPages: {
-        __args: {
-          filter: {
-            _sys_slug: { eq: slug },
-          },
-        },
-        item: legalPostFragment,
-      },
-    }),
-
-  getPosts: async (): Promise<LegalPost[]> => {
-    const data = await basehub.query(legal.postsQuery);
-
-    return data.legalPages.items;
-  },
-
-  getLatestPost: async () => {
-    const data = await basehub.query(legal.latestPostQuery);
-
-    return data.legalPages.item;
-  },
-
-  getPost: async (slug: string) => {
-    const query = legal.postQuery(slug);
-    const data = await basehub.query(query);
-
-    return data.legalPages.item;
-  },
 };
+
+export const basehub = null;
+export const fragmentOn = () => ({});

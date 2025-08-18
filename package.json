@@ -1,34 +1,38 @@
 {
   "name": "next-forge",
   "version": "5.0.4",
-  "bin": {
-    "next-forge": "dist/index.js"
-  },
-  "files": [
-    "dist/index.js"
-  ],
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "basehub dev & next dev",
-    "build": "basehub && next build",
-    "postinstall": "basehub",
-    "lint": "ultracite lint",
-    "format": "ultracite format",
-    "test": "turbo test",
-    "analyze": "turbo analyze",
-    "translate": "turbo translate",
-    "boundaries": "turbo boundaries",
-    "bump-deps": "npx npm-check-updates --deep -u -x react-day-picker",
-    "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system",
+    "dev": "turbo dev --filter=web --filter=@repo/design-system --filter=@repo/internationalization --filter=@repo/seo --filter=@repo/feature-flags --filter=@repo/next-config",
+    "dev:all": "turbo dev",
+    "dev:web": "turbo dev --filter=web",
+    "dev:app": "turbo dev --filter=app",
+    "build": "turbo build --filter=web",
+    "build:all": "turbo build",
+    "build:web": "turbo build --filter=web",
+    "build:app": "turbo build --filter=app",
+    "start": "turbo start --filter=web",
+    "lint": "turbo lint --filter=web",
+    "lint:all": "turbo lint",
+    "format": "turbo format --filter=web",
+    "format:all": "turbo format",
+    "type-check": "turbo type-check --filter=web",
+    "type-check:all": "turbo type-check",
+    "test": "turbo test --filter=web",
+    "test:all": "turbo test",
+    "clean": "turbo clean && git clean -xdf node_modules",
+    "reset": "pnpm clean && pnpm install",
+    "analyze": "turbo analyze --filter=web",
     "migrate": "cd packages/database && npx prisma format && npx prisma generate && npx prisma db push",
-    "clean": "git clean -xdf node_modules"
+    "bump-deps": "npx npm-check-updates --deep -u -x react-day-picker",
+    "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system"
   },
   "devDependencies": {
-    "@auto-it/first-time-contributor": "^11.3.0",
     "@biomejs/biome": "1.9.4",
     "@repo/typescript-config": "workspace:*",
     "@turbo/gen": "^2.5.3",
     "@types/node": "^22.15.21",
-    "tsup": "^8.5.0",
     "turbo": "^2.5.3",
     "typescript": "^5.8.3",
     "ultracite": "^4.2.5",
@@ -38,9 +42,8 @@
     "node": ">=18"
   },
   "packageManager": "pnpm@10.11.0",
-  "dependencies": {
-    "@clack/prompts": "^0.11.0",
-    "commander": "^14.0.0"
-  },
-  "type": "module"
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }

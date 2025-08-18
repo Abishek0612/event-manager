@@ -1,38 +1,34 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "envMode": "loose",
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "test"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        ".basehub/**",
-        "**/generated/**",
-        "storybook-static/**",
-        ".react-email/**"
-      ]
-    },
-    "test": {
-      "dependsOn": ["^test"]
-    },
-    "analyze": {
-      "dependsOn": ["^analyze"]
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".vercel/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "translate": {
-      "dependsOn": ["^translate"],
-      "cache": false
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    },
+    "type-check": {
+      "dependsOn": ["^type-check"]
+    },
+    "test": {
+      "dependsOn": ["^test"],
+      "outputs": ["coverage/**"]
     },
     "clean": {
-      "cache": false
-    },
-    "//#clean": {
       "cache": false
     }
   }

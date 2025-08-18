@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { env } from '@/env';
-import { ModeToggle } from '@repo/design-system/components/mode-toggle';
-import { Button } from '@repo/design-system/components/ui/button';
+import { env } from "@/env";
+import { ModeToggle } from "@repo/design-system/components/mode-toggle";
+import { Button } from "@repo/design-system/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -10,15 +10,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '@repo/design-system/components/ui/navigation-menu';
-import { Menu, MoveRight, X } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
+} from "@repo/design-system/components/ui/navigation-menu";
+import { Menu, MoveRight, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
-import type { Dictionary } from '@repo/internationalization';
-import Image from 'next/image';
-import { LanguageSwitcher } from './language-switcher';
-import Logo from './logo.svg';
+import type { Dictionary } from "@repo/internationalization";
+import Image from "next/image";
+import { LanguageSwitcher } from "./language-switcher";
+import Logo from "./logo.svg";
 
 type HeaderProps = {
   dictionary: Dictionary;
@@ -27,24 +27,14 @@ type HeaderProps = {
 export const Header = ({ dictionary }: HeaderProps) => {
   const navigationItems = [
     {
-      title: dictionary.web.header.home,
-      href: '/',
-      description: '',
+      title: "Events",
+      href: "/events",
+      description: "Manage your events",
     },
     {
-      title: dictionary.web.header.product.title,
-      description: dictionary.web.header.product.description,
-      items: [
-        {
-          title: dictionary.web.header.product.pricing,
-          href: '/pricing',
-        },
-      ],
-    },
-    {
-      title: dictionary.web.header.blog,
-      href: '/blog',
-      description: '',
+      title: "About",
+      href: "/about",
+      description: "Learn more about us",
     },
   ];
 
@@ -52,7 +42,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
     navigationItems.push({
       title: dictionary.web.header.docs,
       href: env.NEXT_PUBLIC_DOCS_URL,
-      description: '',
+      description: "",
     });
   }
 
@@ -160,11 +150,11 @@ export const Header = ({ dictionary }: HeaderProps) => {
                         href={item.href}
                         className="flex items-center justify-between"
                         target={
-                          item.href.startsWith('http') ? '_blank' : undefined
+                          item.href.startsWith("http") ? "_blank" : undefined
                         }
                         rel={
-                          item.href.startsWith('http')
-                            ? 'noopener noreferrer'
+                          item.href.startsWith("http")
+                            ? "noopener noreferrer"
                             : undefined
                         }
                       >

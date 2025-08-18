@@ -1,1 +1,5 @@
-export { Toolbar } from 'basehub/next-toolbar';
+"use client";
+
+export function Toolbar() {
+  return null;
+}

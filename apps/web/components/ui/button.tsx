@@ -5,6 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "danger" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
+  asChild?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant = "primary",
   size = "md",
   children,
+  asChild,
   ...props
 }) => {
   const baseClasses =
@@ -32,6 +34,19 @@ export const Button: React.FC<ButtonProps> = ({
     md: "h-10 px-4 text-sm",
     lg: "h-12 px-6 text-base",
   };
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      className: cn(
+        baseClasses,
+        variantClasses[variant],
+        sizeClasses[size],
+        className,
+        children.props.className
+      ),
+      ...props,
+    });
+  }
 
   return (
     <button

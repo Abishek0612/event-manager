@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { Button } from '@repo/design-system/components/ui/button';
-import { Calendar } from '@repo/design-system/components/ui/calendar';
-import { Input } from '@repo/design-system/components/ui/input';
-import { Label } from '@repo/design-system/components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@repo/design-system/components/ui/popover';
-import { cn } from '@repo/design-system/lib/utils';
-import type { Dictionary } from '@repo/internationalization';
-import { format } from 'date-fns';
-import { CalendarIcon, Check, MoveRight } from 'lucide-react';
-import { useState } from 'react';
+import { Button } from "@repo/design-system/components/ui/button";
+import { Input } from "@repo/design-system/components/ui/input";
+import { Label } from "@repo/design-system/components/ui/label";
+import { Textarea } from "@repo/design-system/components/ui/textarea";
+import type { Dictionary } from "@repo/internationalization";
+import { Check, MoveRight } from "lucide-react";
+import { useState } from "react";
 
 type ContactFormProps = {
   dictionary: Dictionary;
 };
 
 export const ContactForm = ({ dictionary }: ContactFormProps) => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    // Reset after 3 seconds
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
 
   return (
     <div className="w-full py-20 lg:py-40">
@@ -54,63 +54,39 @@ export const ContactForm = ({ dictionary }: ContactFormProps) => {
           </div>
 
           <div className="flex items-center justify-center">
-            <div className="flex max-w-sm flex-col gap-4 rounded-md border p-8">
-              <p>{dictionary.web.contact.hero.form.title}</p>
+            <form
+              onSubmit={handleSubmit}
+              className="flex max-w-sm flex-col gap-4 rounded-md border p-8"
+            >
+              <p>Contact Form</p>
+
               <div className="grid w-full max-w-sm items-center gap-1">
-                <Label htmlFor="picture">
-                  {dictionary.web.contact.hero.form.date}
-                </Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        'w-full max-w-sm justify-start text-left font-normal',
-                        !date && 'text-muted-foreground'
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {date ? (
-                        format(date, 'PPP')
-                      ) : (
-                        <span>{dictionary.web.contact.hero.form.date}</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1">
-                <Label htmlFor="firstname">
-                  {dictionary.web.contact.hero.form.firstName}
-                </Label>
-                <Input id="firstname" type="text" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1">
-                <Label htmlFor="lastname">
-                  {dictionary.web.contact.hero.form.lastName}
-                </Label>
-                <Input id="lastname" type="text" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1">
-                <Label htmlFor="picture">
-                  {dictionary.web.contact.hero.form.resume}
-                </Label>
-                <Input id="picture" type="file" />
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" type="text" required />
               </div>
 
-              <Button className="w-full gap-4">
-                {dictionary.web.contact.hero.form.cta}{' '}
+              <div className="grid w-full max-w-sm items-center gap-1">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" required />
+              </div>
+
+              <div className="grid w-full max-w-sm items-center gap-1">
+                <Label htmlFor="message">Message</Label>
+                <Textarea id="message" required />
+              </div>
+
+              <Button className="w-full gap-4" type="submit">
+                {isSubmitted ? "Sent!" : "Send Message"}
                 <MoveRight className="h-4 w-4" />
               </Button>
-            </div>
+
+              {isSubmitted && (
+                <p className="text-green-600 text-sm text-center">
+                  Thank you for your message! (Demo mode - email not actually
+                  sent)
+                </p>
+              )}
+            </form>
           </div>
         </div>
       </div>

@@ -3,12 +3,7 @@
 import React from "react";
 import { useEventStore } from "@/stores/event-store";
 import { Card } from "@/components/ui/card";
-import {
-  CalendarDaysIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from "@heroicons/react/24/outline";
+import { Calendar, Clock, CheckCircle, AlertTriangle } from "lucide-react";
 
 export const EventStats: React.FC = () => {
   const { stats } = useEventStore();
@@ -17,25 +12,25 @@ export const EventStats: React.FC = () => {
     {
       title: "Total Events",
       value: stats.total,
-      icon: CalendarDaysIcon,
+      icon: Calendar,
       color: "text-blue-600 bg-blue-50",
     },
     {
       title: "Upcoming",
       value: stats.upcoming,
-      icon: ClockIcon,
+      icon: Clock,
       color: "text-orange-600 bg-orange-50",
     },
     {
       title: "Today",
       value: stats.ongoing,
-      icon: ExclamationTriangleIcon,
+      icon: AlertTriangle,
       color: "text-red-600 bg-red-50",
     },
     {
       title: "Completed",
       value: stats.completed,
-      icon: CheckCircleIcon,
+      icon: CheckCircle,
       color: "text-green-600 bg-green-50",
     },
   ];

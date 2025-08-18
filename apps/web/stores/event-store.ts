@@ -4,7 +4,7 @@ import {
   loadEventsFromStorage,
   saveEventsToStorage,
   generateEventStats,
-} from "@/utils/storage";
+} from "@/lib/storage";
 
 interface EventStore {
   events: Event[];

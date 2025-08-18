@@ -46,15 +46,3 @@ export const CardContent: React.FC<CardProps> = ({
     </div>
   );
 };
-
-export const CardFooter: React.FC<CardProps> = ({
-  className,
-  children,
-  ...props
-}) => {
-  return (
-    <div className={cn("p-6 pt-0", className)} {...props}>
-      {children}
-    </div>
-  );
-};

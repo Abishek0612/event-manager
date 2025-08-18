@@ -7,8 +7,7 @@ import { EventFormData } from "@/types/event";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { CalendarIcon, PlusIcon } from "@heroicons/react/24/outline";
-import toast from "react-hot-toast";
+import { CalendarIcon, PlusIcon } from "lucide-react";
 
 export const EventForm: React.FC = () => {
   const addEvent = useEventStore((state) => state.addEvent);
@@ -29,9 +28,8 @@ export const EventForm: React.FC = () => {
     try {
       addEvent(data);
       reset();
-      toast.success("Event added successfully!");
     } catch (error) {
-      toast.error("Failed to add event");
+      console.error("Failed to add event:", error);
     }
   };
 
@@ -67,13 +65,6 @@ export const EventForm: React.FC = () => {
             icon={<CalendarIcon className="h-5 w-5 text-gray-400" />}
             {...register("date", {
               required: "Date is required",
-              validate: (value) => {
-                const selectedDate = new Date(value);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                return true; // Allow past dates for flexibility
-              },
             })}
             error={errors.date?.message}
           />

@@ -1,25 +1,49 @@
-import { authMiddleware } from '@repo/auth/middleware';
+import { env } from "@/env";
+// import { authMiddleware } from '@repo/auth/middleware';
+import { internationalizationMiddleware } from "@repo/internationalization/middleware";
+import { parseError } from "@repo/observability/error";
+import { secure } from "@repo/security";
 import {
   noseconeMiddleware,
   noseconeOptions,
   noseconeOptionsWithToolbar,
-} from '@repo/security/middleware';
-import type { NextMiddleware } from 'next/server';
-import { env } from './env';
+} from "@repo/security/middleware";
+import {
+  type NextMiddleware,
+  type NextRequest,
+  NextResponse,
+} from "next/server";
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|ingest|favicon.ico).*)"],
+};
 
 const securityHeaders = env.FLAGS_SECRET
   ? noseconeMiddleware(noseconeOptionsWithToolbar)
   : noseconeMiddleware(noseconeOptions);
 
-export default authMiddleware(() =>
-  securityHeaders()
-) as unknown as NextMiddleware;
+// Fix the middleware function - remove the type assertion
+const middleware: NextMiddleware = async (request: NextRequest) => {
+  const i18nResponse = internationalizationMiddleware(request);
+  if (i18nResponse) {
+    return i18nResponse;
+  }
 
-export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
+  if (!env.ARCJET_KEY) {
+    return securityHeaders();
+  }
+
+  try {
+    await secure(
+      ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW", "CATEGORY:MONITOR"],
+      request
+    );
+
+    return securityHeaders();
+  } catch (error) {
+    const message = parseError(error);
+    return NextResponse.json({ error: message }, { status: 403 });
+  }
 };
+
+export default middleware;

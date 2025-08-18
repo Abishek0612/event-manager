@@ -6,14 +6,7 @@ import { useEventStore } from "@/stores/event-store";
 import { Event } from "@/types/event";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  CalendarIcon,
-  TrashIcon,
-  PencilIcon,
-  TagIcon,
-  ExclamationCircleIcon,
-} from "@heroicons/react/24/outline";
-import toast from "react-hot-toast";
+import { Calendar, Trash2, Edit, Tag, AlertCircle } from "lucide-react";
 
 interface EventItemProps {
   event: Event;
@@ -25,14 +18,12 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       deleteEvent(event.id);
-      toast.success("Event deleted successfully");
     }
   };
 
   const handleToggleStatus = () => {
     const newStatus = event.status === "completed" ? "upcoming" : "completed";
     updateEvent(event.id, { status: newStatus });
-    toast.success(`Event marked as ${newStatus}`);
   };
 
   const getPriorityColor = (priority: Event["priority"]) => {
@@ -88,7 +79,7 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
           </div>
 
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-            <CalendarIcon className="h-4 w-4" />
+            <Calendar className="h-4 w-4" />
             {format(new Date(event.date), "PPP")}
           </div>
 
@@ -98,7 +89,7 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
                 event.category
               )}`}
             >
-              <TagIcon className="h-3 w-3 inline mr-1" />
+              <Tag className="h-3 w-3 inline mr-1" />
               {event.category}
             </span>
             <span
@@ -106,7 +97,7 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
                 event.priority
               )}`}
             >
-              <ExclamationCircleIcon className="h-3 w-3 inline mr-1" />
+              <AlertCircle className="h-3 w-3 inline mr-1" />
               {event.priority} priority
             </span>
           </div>
@@ -127,7 +118,7 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
             onClick={handleToggleStatus}
             className="p-2"
           >
-            <PencilIcon className="h-4 w-4" />
+            <Edit className="h-4 w-4" />
           </Button>
           <Button
             variant="danger"
@@ -135,7 +126,7 @@ export const EventItem: React.FC<EventItemProps> = ({ event }) => {
             onClick={handleDelete}
             className="p-2"
           >
-            <TrashIcon className="h-4 w-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       </div>

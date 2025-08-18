@@ -3,7 +3,6 @@
 import React from "react";
 import { useEventStore } from "@/stores/event-store";
 import { EventItem } from "./event-item";
-import { motion, AnimatePresence } from "framer-motion";
 
 export const EventList: React.FC = () => {
   const { filteredEvents, filters } = useEventStore();
@@ -45,21 +44,11 @@ export const EventList: React.FC = () => {
         </h2>
       </div>
 
-      <AnimatePresence>
-        <div className="space-y-3">
-          {filteredEvents.map((event, index) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2, delay: index * 0.05 }}
-            >
-              <EventItem event={event} />
-            </motion.div>
-          ))}
-        </div>
-      </AnimatePresence>
+      <div className="space-y-3">
+        {filteredEvents.map((event) => (
+          <EventItem key={event.id} event={event} />
+        ))}
+      </div>
     </div>
   );
 };

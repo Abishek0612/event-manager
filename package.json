@@ -8,8 +8,9 @@
     "dist/index.js"
   ],
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "basehub dev & next dev",
+    "build": "basehub && next build",
+    "postinstall": "basehub",
     "lint": "ultracite lint",
     "format": "ultracite format",
     "test": "turbo test",

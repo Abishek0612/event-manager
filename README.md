@@ -1,31 +1,46 @@
-# ▲ / next-forge
+# Event Manager - Next-Forge Turbo Template
 
-**Production-grade Turborepo template for Next.js apps.**
+A modern event management application built with Next.js, TypeScript, and the Next-Forge Turbo template. This app allows users to create, manage, and organize events with advanced features like search, filtering, and data export.
 
-<div>
-  <img src="https://img.shields.io/npm/dy/next-forge" alt="" />
-  <img src="https://img.shields.io/npm/v/next-forge" alt="" />
-  <img src="https://img.shields.io/github/license/vercel/next-forge" alt="" />
-</div>
+## Features
 
-## Overview
+- **Event Management**: Create, edit, and delete events
+- **Smart Search**: Filter events by name, category, status, and priority
+- **Data Persistence**: Events are saved to localStorage
+- **Export Options**: Export events in CSV, JSON, Excel, and TXT formats
+- **Responsive Design**: Mobile-friendly interface with Tailwind CSS
+- **Real-time Statistics**: Track event counts and statuses
+- **Advanced Sorting**: Sort by date, name, priority, or creation time
 
-[next-forge](https://github.com/vercel/next-forge) is a [Next.js](https://nextjs.org/) project boilerplate for modern web application. It is designed to be a comprehensive starting point for new apps, providing a solid, opinionated foundation with a minimal amount of configuration.
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Form Handling**: React Hook Form
+- **Build Tool**: Turbo (Turborepo)
+- **Package Manager**: pnpm
+- **Monorepo**: Next-Forge Turbo Template
+
+## Prerequisites
+
+- Node.js 18+
+- pnpm 8+
 
 ## Getting Started
 
-Clone the repo using:
+### 1. Clone the Repository
 
-```sh
-npx next-forge@latest init
+```bash
+git clone - https://github.com/Abishek0612/event-manager.git
+cd next-forge
 ```
 
-Then read the [docs](https://www.next-forge.com/docs) for more information.
+# Install Dependencies
 
-## Contributors
+pnpm install
 
-<a href="https://github.com/vercel/next-forge/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=vercel/next-forge" />
-</a>
+# Run Development Server
 
-Made with [contrib.rocks](https://contrib.rocks).
+pnpm dev

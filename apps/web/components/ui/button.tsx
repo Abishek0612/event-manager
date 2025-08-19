@@ -36,13 +36,14 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    const childElement = children as React.ReactElement<any>;
+    return React.cloneElement(childElement, {
       className: cn(
         baseClasses,
         variantClasses[variant],
         sizeClasses[size],
         className,
-        children.props.className
+        childElement.props?.className
       ),
       ...props,
     });

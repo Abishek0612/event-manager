@@ -20,15 +20,16 @@ import Image from "next/image";
 import { LanguageSwitcher } from "./language-switcher";
 import Logo from "./logo.svg";
 
-// Add proper TypeScript interface for navigation items
+interface SubMenuItem {
+  title: string;
+  href: string;
+}
+
 interface NavigationItem {
   title: string;
   href?: string;
   description: string;
-  items?: Array<{
-    title: string;
-    href: string;
-  }>;
+  items?: SubMenuItem[];
 }
 
 type HeaderProps = {
@@ -58,13 +59,14 @@ export const Header = ({ dictionary }: HeaderProps) => {
   }
 
   const [isOpen, setOpen] = useState(false);
+
   return (
     <header className="sticky top-0 left-0 z-40 w-full border-b bg-background">
       <div className="container relative mx-auto flex min-h-20 flex-row items-center gap-4 lg:grid lg:grid-cols-3">
         <div className="hidden flex-row items-center justify-start gap-4 lg:flex">
           <NavigationMenu className="flex items-start justify-start">
             <NavigationMenuList className="flex flex-row justify-start gap-4">
-              {navigationItems.map((item) => (
+              {navigationItems.map((item: NavigationItem) => (
                 <NavigationMenuItem key={item.title}>
                   {item.href ? (
                     <>
@@ -95,16 +97,19 @@ export const Header = ({ dictionary }: HeaderProps) => {
                             </Button>
                           </div>
                           <div className="flex h-full flex-col justify-end text-sm">
-                            {item.items?.map((subItem, idx) => (
-                              <NavigationMenuLink
-                                href={subItem.href}
-                                key={idx}
-                                className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
-                              >
-                                <span>{subItem.title}</span>
-                                <MoveRight className="h-4 w-4 text-muted-foreground" />
-                              </NavigationMenuLink>
-                            ))}
+                            {item.items &&
+                              item.items.map(
+                                (subItem: SubMenuItem, idx: number) => (
+                                  <NavigationMenuLink
+                                    href={subItem.href}
+                                    key={idx}
+                                    className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
+                                  >
+                                    <span>{subItem.title}</span>
+                                    <MoveRight className="h-4 w-4 text-muted-foreground" />
+                                  </NavigationMenuLink>
+                                )
+                              )}
                           </div>
                         </div>
                       </NavigationMenuContent>
@@ -153,7 +158,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
           </Button>
           {isOpen && (
             <div className="container absolute top-20 right-0 flex w-full flex-col gap-8 border-t bg-background py-4 shadow-lg">
-              {navigationItems.map((item) => (
+              {navigationItems.map((item: NavigationItem) => (
                 <div key={item.title}>
                   <div className="flex flex-col gap-2">
                     {item.href ? (
@@ -175,18 +180,19 @@ export const Header = ({ dictionary }: HeaderProps) => {
                     ) : (
                       <p className="text-lg">{item.title}</p>
                     )}
-                    {item.items?.map((subItem) => (
-                      <Link
-                        key={subItem.title}
-                        href={subItem.href}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-muted-foreground">
-                          {subItem.title}
-                        </span>
-                        <MoveRight className="h-4 w-4 stroke-1" />
-                      </Link>
-                    ))}
+                    {item.items &&
+                      item.items.map((subItem: SubMenuItem) => (
+                        <Link
+                          key={subItem.title}
+                          href={subItem.href}
+                          className="flex items-center justify-between"
+                        >
+                          <span className="text-muted-foreground">
+                            {subItem.title}
+                          </span>
+                          <MoveRight className="h-4 w-4 stroke-1" />
+                        </Link>
+                      ))}
                   </div>
                 </div>
               ))}

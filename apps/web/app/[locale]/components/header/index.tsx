@@ -20,12 +20,23 @@ import Image from "next/image";
 import { LanguageSwitcher } from "./language-switcher";
 import Logo from "./logo.svg";
 
+// Add proper TypeScript interface for navigation items
+interface NavigationItem {
+  title: string;
+  href?: string;
+  description: string;
+  items?: Array<{
+    title: string;
+    href: string;
+  }>;
+}
+
 type HeaderProps = {
   dictionary: Dictionary;
 };
 
 export const Header = ({ dictionary }: HeaderProps) => {
-  const navigationItems = [
+  const navigationItems: NavigationItem[] = [
     {
       title: "Events",
       href: "/events",
